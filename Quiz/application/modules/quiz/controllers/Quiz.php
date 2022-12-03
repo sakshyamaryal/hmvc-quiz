@@ -29,15 +29,16 @@ class Quiz extends MX_Controller
         echo json_encode($data);
     }
 
-    public function showData(){
+    public function showData()
+    {
         $info = $this->quiz_model->fetchPlayerData();
         $data['info'] = $info;
         $this->load->view('adminview', $data);
         // echo json_encode($data);
-  
     }
 
-    public function viewsingleData(){
+    public function viewsingleData()
+    {
         $this->load->view('data');
     }
 
@@ -51,8 +52,8 @@ class Quiz extends MX_Controller
         $attemptedquestions = $this->input->post('attemptedquestions');
         $correctquestions = $this->input->post('correctquestions');
         $timeconsumed = $this->input->post('timeconsumed');
-
-        $navigate = $this->quiz_model->insertData($playername, $date, $totalquestions,$attemptedquestions,$correctquestions,$timeconsumed);
+        $selectedoption = $this->input->post('selectedoption');
+        $navigate = $this->quiz_model->insertData($playername, $date, $totalquestions, $attemptedquestions, $correctquestions, $timeconsumed,$selectedoption);
 
         if ($navigate) {
             $checkdata = array(
@@ -68,4 +69,10 @@ class Quiz extends MX_Controller
     }
 
 
+    public function singleData()
+    {
+        $name = $this->input->get('name');
+        $info['played'] = $this->quiz_model->viewSingleData($name);
+        $this->load->view('singledata', $info);
+    }
 }

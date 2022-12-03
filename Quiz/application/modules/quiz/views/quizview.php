@@ -1,12 +1,6 @@
+<title>quiz</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<!-- <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js">
-<link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-
-<!-- <link rel="stylesheet" href=""> -->
-<link rel="stylesheet" href="css/style.css">
-
+<link rel="stylesheet" href="<?php echo base_url() ?>css/style.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -32,22 +26,7 @@
                         </h3>
                         <h5 class="mt-1 ml-2" id='question'></h5>
                     </div>
-                    <div class="ans ml-2">
-                        <label class="radio"> <input type="radio" name="option" value="1" class="mark"> <span id="option_a"></span>
-                        </label>
-                    </div>
-                    <div class="ans ml-2">
-                        <label class="radio"> <input type="radio" name="option" value="2" class="mark"> <span id="option_b"></span>
-                        </label>
-                    </div>
-                    <div class="ans ml-2">
-                        <label class="radio"> <input type="radio" name="option" value="3" class="mark"> <span id="option_c"></span>
-                        </label>
-                    </div>
-                    <div class="ans ml-2">
-                        <label class="radio"> <input type="radio" name="option" value="4" class="mark"> <span id="option_d"></span>
-                        </label>
-                    </div>
+                    <div class="options"></div>
                 </div>
 
                 <div class="d-flex flex-row justify-content-between align-items-center p-3 bg-white">
@@ -67,13 +46,14 @@
 </div>
 
 <script>
-    var timer_arr = [];
-
+  
+    var arr = [];
     $(function() {
         data();
         playername();
         submit();
-        
+        radioButton();
+        correctAnswer();
     });
 
 
@@ -85,6 +65,7 @@
         var storeQuestion;
         var newTime;
         var correct;
+        var item;
         var question = Math.floor((Math.random() * 1) + 1);
 
         var downloadTimer = setInterval(function() {
@@ -108,17 +89,10 @@
             storetime = sessionStorage.setItem(question, timeleft);
 
             localStorage.setItem("timeTaken", timeTaken);
-
-            // console.log(storetime);
-            // console.log(timeTaken);
-            // newTime = timer_arr.push(storetime);
-
-
-
         }, 1000);
 
         listQuestions(question);
-        correctAnswer();
+
         $("#next").click(function() {
             storetime = sessionStorage.key(question);
             question = question + 1;
@@ -137,17 +111,15 @@
                 $('#next').hide();
             } else {
                 $('#next').show();
-                // $('previous').show();
             }
-
-            // $("[type=radio]").prop("checked", false);
-
             listQuestions(question);
 
+            radioButton();
+            correctAnswer();
         });
 
         $("#previous").click(function() {
-            // radioBtn();
+
             question = question - 1;
 
             storetime = sessionStorage.key(question);
@@ -165,9 +137,8 @@
             }
 
             listQuestions(question);
-            const entries = Object.entries(sessionStorage)
-            console.log(entries)
-            console.log(timeleft);
+            radioButton();
+            correctAnswer();
         });
 
 
@@ -184,12 +155,21 @@
 
     function submit() {
         $("#submit").click(function() {
-            var date, playername, totalquestion, attemptedquestions, correctquestions, timeconsumed;
+            for (let index = 1; index <=10; index++) {
+            var one = localStorage.getItem(index); 
+            var items = arr.push(one + ",");
+            console.log(arr);
+                }
+                localStorage.setItem("keys",arr);
+        
+            var date, playername, totalquestion, attemptedquestions, correctquestions, timeconsumed,selectedoption;
             playername = localStorage.getItem("playername");
             date = localStorage.getItem("date");
             timeconsumed = localStorage.getItem("timeTaken");
             totalquestions = 10;
-
+            correctquestions = localStorage.getItem("previous");
+            attemptedquestions = localStorage.getItem("attempt");
+            selectedoption = localStorage.getItem("keys");
             var url = "<?php echo base_url() . "quiz/savePlayerInfo" ?>";
             console.log(url);
             $.post(url, {
@@ -198,7 +178,8 @@
                 totalquestions,
                 attemptedquestions,
                 correctquestions,
-                timeconsumed
+                timeconsumed,
+                selectedoption
             });
 
             window.location.replace(<?php base_url() ?> 'viewsingleData');
@@ -212,68 +193,58 @@
         };
     }
 
-    function radioButton(questions) {
+    function radioButton() {
         var val;
+        var questionnumber;
+        var checkbox;
+        var change;
+        var question;
+        var value;
         $('.mark').click(function() {
+
             $('input[name="option"]:checked').each(function() {
                 val = this.value;
-                console.log(val);
-                localStorage.setItem("correctanswer", val);
-                localStorage.setItem(questions, val);
+                questionnumber = localStorage.getItem('questionNo');
+                if (val) {
+                    for (var i = 1; i <= questionnumber; i++) {
+                        // attempt = Number(attempt) + 1;
+                        localStorage.setItem("attempt", i);
+                        console.log(val);
+                        localStorage.setItem("correctanswer", val);
+                        question = localStorage.setItem(questionnumber, val);
+                    }
+                }
             });
+
         });
-
-       
-        // $("input[name=mygroup][value=" + value + "]").attr('checked', true);
-        // $("#previous").click(function(){
-        //     $('.1').prop("checked",true);
-        //     $('.2').prop("checked",true);
-        //     $('.3').prop("checked",true);
-        //     $('.4').prop("checked",true);
-        // });
-
-        // var checked = localStorage.getItem("questionNo");
-        
 
     }
 
-    function correctAnswer() {
-        var count = 0;
 
+    function correctAnswer() {
         var val;
         $('.mark').click(function() {
             $('input[name="option"]:checked').each(function() {
+                var questionnumber = localStorage.getItem('questionNo');
                 val = this.value;
-                console.log(val);
-                // localStorage.setItem("correctanswer", count);
+                for (var i = 1; i <= questionnumber; i++) {
+                    var count = 0;
+                    
+                    var correct = localStorage.getItem("answer");
+
+                    // $("input[name=option][value=" + correct + "]").prop("checked", true);
+                    // $('#'+correct).css("background-color", "green");
+
+                    if (correct === val) {
+                        count = Number(count) + 1;
+                        localStorage.setItem("previous", i);
+                    } else {
+                        count = localStorage.getItem("previous");
+                    }
+                }
             });
-            var correct = localStorage.getItem("answer");
-
-            if (correct == val) {
-                count = Number(count) + 1;
-                localStorage.setItem("previous", count);
-                console.log("increment" + count);
-            } else {
-                count = localStorage.getItem("previous");
-                console.log("decrement" + count);
-            }
-
-         
         });
-        
-
-
     };
-    //     $( "select" )
-    //   .change(function() {
-    //     var str = "";
-    //     $( "select option:selected" ).each(function() {
-    //       str += $( this ).text() + " ";
-    //     });
-    //   })
-    //   .trigger( "change" );
-
-
 
     function listQuestions(question) {
         $.ajax({
@@ -287,33 +258,48 @@
             },
             success: function(data) {
                 var html = '';
-                var option_a = '';
-                var option_b = '';
-                var option_c = '';
-                var option_d = '';
+                var option = '';
                 var correct_option = '';
                 var i;
                 for (i = 0; i < data.length; i++) {
                     html += data[i].question
-                    option_a += data[i].option_a
-                    option_b += data[i].option_b
-                    option_c += data[i].option_c
-                    option_d += data[i].option_d
+
                     correct_option += data[i].correct_option;
+
+                    option += '<div class="ans ml-2">' +
+                        '<label class="radio" id="1"> <input type="radio" name="option" value="1" class="mark"> <span id="option_a">' + data[i].option_a + '</span>' +
+                        '</label>' +
+                        '</div>' +
+                        '<div class="ans ml-2">' +
+                        '<label class="radio" id="2"> <input type="radio" name="option" value="2" class="mark"> <span id="option_b">' + data[i].option_b + '</span>' +
+                        '</label>' +
+                        '</div>' +
+                        '<div class="ans ml-2">' +
+                        '<label class="radio" id="3"> <input type="radio" name="option" value="3" class="mark"> <span id="option_c">' + data[i].option_c + '</span>' +
+                        '</label>' +
+                        '</div>' +
+                        '<div class="ans ml-2">' +
+                        '<label class="radio" id="4"> <input type="radio" name="option" value="4" class="mark"> <span id="option_d">' + data[i].option_d + '</span>'
+                    '</label>' +
+                    '</div>';
                 }
                 console.log("correct ans is" + correct_option);
 
                 $('#question').html(html);
-                $('#option_a').html(option_a);
-                $('#option_b').html(option_b);
-                $('#option_c').html(option_c);
-                $('#option_d').html(option_d);
+                $('.options').html(option);
+
                 $('#id').html(question);
                 localStorage.setItem('answer', correct_option);
                 localStorage.setItem('questionNo', question);
-            }
+                if (localStorage.key(question)) {
+                    $('input[value="' + localStorage.getItem(question) + '"]').prop("checked", true);
+                    console.log(localStorage.key(question));
+                }
 
+            }
         });
+
+
 
     }
 </script>

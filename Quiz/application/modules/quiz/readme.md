@@ -90,17 +90,5 @@ quiz_questions (to store question)
 quiz_options (to store options)
 quiz_played (to store user played quiz questions)
 
-insert into question('')
 
 
-update date  // 
-form validation //
-link css 
-update insert things 
-submit btn works // 
-timing after 0  -----------------------
-hide previous btn ---------------------
-show data -----------------------------
-admin work ----------------------------
-if window reload clear session
-time up disable

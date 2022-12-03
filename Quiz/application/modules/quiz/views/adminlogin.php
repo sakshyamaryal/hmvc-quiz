@@ -1,26 +1,5 @@
-<?php 
-    if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
-    if(isset($_POST['submit'])){
-        $_SESSION['username'] = "admin";
-        $_SESSION['password'] = "admin";
-        echo $_SESSION['username'];
-        if($_POST['username'] == $_SESSION['username'] && $_POST['password'] == $_SESSION['password']){
-            redirect('quiz/showData');
-        }
-        else{
-            redirect('quiz/showData');
-        }
-    }
-    $_SESSION['username'] = "admin";
-    $_SESSION['password'] = "admin";
-
-
-?>
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <section class="h-100 gradient-form" style="background-color: #eee;">
     <div class="container py-5 h-100">
@@ -41,18 +20,17 @@
 
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="form2Example11">Username</label>
-                                        <input type="text" id="form2Example11" class="form-control" name="username" />
-
+                                        <input type="text" id="form2Example11" class="form-control" name="username" require />
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="form2Example22">Password</label>
-                                        <input type="password" id="form2Example22" class="form-control" name="password" />
+                                        <input type="password" id="form2Example22" class="form-control" name="password" require />
 
                                     </div>
 
                                     <div class="text-center pt-1 mb-5 pb-1">
-                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button" name="submit">Log
+                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" name="submit">Log
                                             in</button>
                                     </div>
 
@@ -67,8 +45,16 @@
     </div>
 </section>
 
-<script>
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+if (isset($_POST['submit']) ==  TRUE) {
+    $_SESSION['username'] = "admin";
+    $_SESSION['password'] = "admin";
+    if ($_POST['username'] == $_SESSION['username'] && $_POST['password'] == $_SESSION['password']) {
+        header('location:' . base_url() . 'quiz/showData');
+    }
+}
 
-
-</script>
-
+?>

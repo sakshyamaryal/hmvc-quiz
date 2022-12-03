@@ -17,11 +17,13 @@ class Quiz_model extends CI_Model
         $data = $this->db->get_where('quiz_questions', $where)->result_array();
         return $data;
     }
-    public function fetchPlayerData(){
+    public function fetchPlayerData()
+    {
+
         $data = $this->db->get('quiz_played')->result_array();
         return $data;
     }
-    public function insertData($playername, $date, $totalquestions,$attemptedquestions,$correctquestions,$timeconsumed)
+    public function insertData($playername, $date, $totalquestions, $attemptedquestions, $correctquestions, $timeconsumed,$selectedoption)
     {
         $getData = $this->db->set('playername', $playername)
             ->set('date', $date)
@@ -29,6 +31,7 @@ class Quiz_model extends CI_Model
             ->set('attemptedquestions', $attemptedquestions)
             ->set('correctquestions', $correctquestions)
             ->set('timeconsumed', $timeconsumed)
+            ->set('selectedoption', $selectedoption)
             ->insert('quiz_played');
 
         if ($getData) {
@@ -36,5 +39,13 @@ class Quiz_model extends CI_Model
         } else {
             return false;
         }
+    }
+
+    public function viewSingleData($name)
+    {
+        $where = array('playername' => $name);
+        $this->db->select('*');
+        $data = $this->db->get_where('quiz_played', $where)->result_array();
+        return $data;
     }
 }

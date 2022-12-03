@@ -2,6 +2,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <section class="h-100 gradient-form" style="background-color: #eee;">
+
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-xl-10">
@@ -40,29 +41,20 @@
         playerData();
     });
 
-
-    
-
     function playerData() {
         $("#navigate").click(function() {
             var playername = $("#playername").val();
 
             var date = new Date();
-            // var day = date.getDate();
-            // var month = date.getMonth() + 1;
-            // var year = date.getFullYear();
-            // console.log("Date is: " + day + "/" + month + "/" + year);
-            // var totalquestions = 10;
-            // $.session.set("playername",playername);
-            if(playername ==''){
-            $('#name').html('Player Name cannot be null!')
+
+            if (playername == '') {
+                $('#name').html('Player Name cannot be null!')
+            } else {
+                localStorage.setItem("playername", playername);
+                localStorage.setItem("date", date);
+                window.location.replace('http://localhost/quiz/quiz/quizTemplate');
             }
-            else{
-            localStorage.setItem("playername", playername);
-            localStorage.setItem("date", date);
-            window.location.replace('http://localhost/quiz/quiz/quizTemplate');
-            }
-            
+
         });
     }
 </script>
