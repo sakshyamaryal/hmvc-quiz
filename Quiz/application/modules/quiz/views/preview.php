@@ -17,8 +17,6 @@ if ($_SESSION['username'] && $_SESSION['password']) { ?>
                 <th scope="col">Name</th>
                 <th scope="col">Date</th>
                 <th scope="col">Total Questions</th>
-                <!-- <th scope="col">Attempted Questions</th> -->
-                <!-- <th scope="col">Correct Answer</th> -->
                 <th scope="col">Total Time(In seconds)</th>
 
             </tr>

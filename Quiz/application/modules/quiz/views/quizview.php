@@ -46,7 +46,6 @@
 </div>
 
 <script>
-  
     var arr = [];
     $(function() {
         data();
@@ -131,6 +130,8 @@
             }
             if (question == 1) {
                 $('#previous').hide();
+            } else {
+                $('#previous').show();
             }
             if (question < 10) {
                 $('#next').show();
@@ -155,14 +156,14 @@
 
     function submit() {
         $("#submit").click(function() {
-            for (let index = 1; index <=10; index++) {
-            var one = localStorage.getItem(index); 
-            var items = arr.push(one + ",");
-            console.log(arr);
-                }
-                localStorage.setItem("keys",arr);
-        
-            var date, playername, totalquestion, attemptedquestions, correctquestions, timeconsumed,selectedoption;
+            for (let index = 1; index <= 10; index++) {
+                var one = localStorage.getItem(index);
+                var items = arr.push(one + ",");
+                console.log(arr);
+            }
+            localStorage.setItem("keys", arr);
+
+            var date, playername, totalquestion, attemptedquestions, correctquestions, timeconsumed, selectedoption;
             playername = localStorage.getItem("playername");
             date = localStorage.getItem("date");
             timeconsumed = localStorage.getItem("timeTaken");
@@ -229,14 +230,14 @@
                 val = this.value;
                 for (var i = 1; i <= questionnumber; i++) {
                     var count = 0;
-                    
+
                     var correct = localStorage.getItem("answer");
 
                     // $("input[name=option][value=" + correct + "]").prop("checked", true);
                     // $('#'+correct).css("background-color", "green");
 
                     if (correct === val) {
-                        count = Number(count) + 1;
+                        // count = Number(count) + 1;
                         localStorage.setItem("previous", i);
                     } else {
                         count = localStorage.getItem("previous");

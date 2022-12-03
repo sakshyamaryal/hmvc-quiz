@@ -1,6 +1,3 @@
-/** send value in local storage 
-if the value is already clicked 
-if there is value check the 
 
 
 1. In which decade was the American Institute of Electrical Engineers (AIEE) founded?
